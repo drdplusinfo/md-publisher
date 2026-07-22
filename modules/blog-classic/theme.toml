@@ -1,0 +1,4 @@
+name = "Blog Classic"
+license = "MIT"
+description = "Classic blog: featured first post with perex card, year-grouped archive, prev/next navigation, RSS at /rss.xml. Extracted from blog.drdplus.info."
+min_version = "0.140.0"

@@ -1,0 +1,40 @@
+baseURL = "http://localhost:1313/"
+locale = "en"
+title = "Hello World"
+theme = ["blog-classic"]
+themesDir = "../modules"
+disableKinds = ["taxonomy", "term"]
+
+# Posts live at /blog/YYYY/MM/DD/slug/ — the date comes from front matter, not the directory name.
+[permalinks]
+  blog = "/blog/:year/:month/:day/:slug/"
+
+# Pretty URLs (trailing slash) and home RSS.
+[outputs]
+  home = ["HTML", "RSS"]
+  section = ["HTML"]
+  page = ["HTML"]
+
+# Serve home RSS at /rss.xml (default would be /index.xml).
+[outputFormats.RSS]
+  baseName = "rss"
+
+[params]
+  description = "A Markdown-based site published with the blog-classic module."
+  footerHtml = 'Published with <a href="https://gohugo.io/">Hugo</a> and the blog-classic module'
+  dateFormat = "Jan 2, 2006"
+  dayMonthFormat = "Jan 2"
+
+  [[params.menu]]
+    name = "Blog"
+    id = "blog"
+    url = "/"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.tableOfContents]
+    endLevel = 3
+    ordered = false
+    startLevel = 2

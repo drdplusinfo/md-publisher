@@ -1,0 +1,9 @@
+services:
+  hugo:
+    image: hugomods/hugo:0.161.1
+    working_dir: /src/site
+    volumes:
+      - .:/src:delegated
+    command: ["server", "--bind", "0.0.0.0", "--port", "1313", "--baseURL", "http://localhost:1313/", "--appendPort=false", "--disableFastRender", "--buildDrafts", "--buildFuture"]
+    ports:
+      - "${HUGO_PORT:-1313}:1313"
