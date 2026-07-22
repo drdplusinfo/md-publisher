@@ -1,0 +1,16 @@
+{{- /*
+Besides Hugo's own heading id, emit invisible anchor aliases in the legacy
+shapes older content and external inbound links use for fragments:
+underscores keeping case and diacritics ("Magická_šestka"), and ascii
+lowercase with underscores ("ke_stazeni") or hyphens ("obalka-pro-draci-odkaz").
+*/ -}}
+{{- $plain := .PlainText -}}
+{{- $ascii := lower $plain -}}
+{{- range $from, $to := dict "á" "a" "č" "c" "ď" "d" "é" "e" "ě" "e" "í" "i" "ň" "n" "ó" "o" "ř" "r" "š" "s" "ť" "t" "ú" "u" "ů" "u" "ý" "y" "ž" "z" -}}
+    {{- $ascii = replace $ascii $from $to -}}
+{{- end -}}
+{{- $aliases := slice (replace $plain " " "_") (replace $ascii " " "_") (replace $ascii " " "-") | uniq -}}
+<h{{ .Level }} id="{{ .Anchor | safeURL }}">
+    {{- range $aliases }}{{ if and . (ne . $.Anchor) }}<span id="{{ . | safeURL }}"></span>{{ end }}{{ end -}}
+    {{ .Text }}
+</h{{ .Level }}>

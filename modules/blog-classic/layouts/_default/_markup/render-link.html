@@ -1,0 +1,13 @@
+{{- /*
+Legacy flat-file post links: Statie-era content links to sibling posts as
+"YYYY-MM-DD-slug.md" or "../YYYY/YYYY-MM-DD-slug.md". Rewrite them to the
+permalink shape /blog/YYYY/MM/DD/slug/ (the same mapping redirect.js does
+for legacy hash URLs). Absolute URLs and everything else pass through as
+Goldmark would render them.
+*/ -}}
+{{- $dest := .Destination -}}
+{{- if findRE `^(\.\./\d{4}/)?\d{4}-\d{2}-\d{2}-[^#/]+\.md(#.*)?$` $dest -}}
+    {{- $dest = replaceRE `^(?:\.\./\d{4}/)?(\d{4})-(\d{2})-(\d{2})-([^#/]+)\.md` `/blog/$1/$2/$3/$4/` $dest -}}
+{{- end -}}
+<a href="{{ $dest | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}>{{ .Text }}</a>
+{{- /* chomp trailing newline */ -}}

@@ -62,6 +62,20 @@ Served at `/blog/2026/03/04/my-post/` (the URL date comes from `date:`, not the
 directory name). Optional front matter: `facebook_image`, `image_author`,
 `deprecated_since` (hides the post from listings and RSS).
 
+## Legacy link handling (blog-classic)
+
+Content migrated from flat-file generators often links to sibling posts as
+`YYYY-MM-DD-slug.md` (optionally `../YYYY/YYYY-MM-DD-slug.md`). A Markdown
+render hook rewrites such links to `/blog/YYYY/MM/DD/slug/` at build time, and
+`redirect.js` does the same in the browser for legacy `#!clanky/…` hash URLs.
+Absolute URLs are never touched.
+
+Fragments are covered by a heading render hook: every heading gets, besides
+Hugo's own id (`magická-šestka`), invisible anchor aliases in the legacy
+shapes (`Magická_šestka`, `magicka_sestka`, `magicka-sestka`), so old
+fragment links — including inbound ones from external sites — still scroll
+to their section.
+
 ## blog-classic module parameters
 
 Set under `[params]` in `site/hugo.toml`:
