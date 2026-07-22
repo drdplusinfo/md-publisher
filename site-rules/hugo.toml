@@ -1,0 +1,30 @@
+baseURL = "http://localhost:1314/"
+locale = "en"
+title = "Hello World Rules"
+theme = ["rules-classic"]
+themesDir = "../modules"
+disableKinds = ["taxonomy", "term", "section", "rss", "sitemap"]
+
+[params]
+  description = "A single-page book published with the rules-classic module."
+  tableOfContentsTitle = "Contents"
+  tableOfContentsId = "contents"
+
+  [params.home]
+    url = "https://github.com/drdplusinfo/md-publisher"
+    label = "⌂"
+
+  [[params.contacts]]
+    icon = "fas fa-envelope"
+    label = "info@example.com"
+    url = "mailto:info@example.com"
+
+  [[params.contacts]]
+    icon = "fab fa-github"
+    label = "GitHub"
+    url = "https://github.com/drdplusinfo/md-publisher"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

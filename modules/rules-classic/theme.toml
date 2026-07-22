@@ -1,0 +1,4 @@
+name = "Rules Classic"
+license = "MIT"
+description = "One large single-page document composed from Markdown chapters, with a generated table of contents and legacy-friendly heading anchors. Extracted from the DrD+ rules skeleton (pph.drdplus.info)."
+min_version = "0.140.0"

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.Lang }}">
+{{ partial "head.html" . }}
+<body class="container">
+<div class="background-image"></div>
+{{ partial "menu.html" . }}
+<div class="contacts-placeholder invisible">
+    &nbsp;
+</div>
+
+{{ block "main" . }}{{ end }}
+</body>
+</html>

@@ -1,5 +1,8 @@
 site/public/
 site/resources/
 site/.hugo_build.lock
+site-rules/public/
+site-rules/resources/
+site-rules/.hugo_build.lock
 var/
 .idea/

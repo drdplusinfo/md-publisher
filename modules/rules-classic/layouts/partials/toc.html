@@ -1,0 +1,33 @@
+{{- /*
+Table of contents in the classic rules shape: one table per top-level (h1)
+heading, h2 rows marked "main", h3 rows plain. Built from the chapters'
+heading structure ("chapters" argument = ordered chapter pages).
+*/ -}}
+{{- $chapters := . -}}
+<div id="table_of_contents">
+    {{- range $chapters }}
+        {{- range .Fragments.Headings }}
+            <table class="content">
+                <thead>
+                <tr>
+                    <th><a href="#{{ .ID }}">{{ .Title | safeHTML }}</a></th>
+                </tr>
+                </thead>
+                {{- if .Headings }}
+                    <tbody>
+                    {{- range .Headings }}
+                        <tr>
+                            <td class="main"><a href="#{{ .ID }}">{{ .Title | safeHTML }}</a></td>
+                        </tr>
+                        {{- range .Headings }}
+                            <tr>
+                                <td><a href="#{{ .ID }}">{{ .Title | safeHTML }}</a></td>
+                            </tr>
+                        {{- end }}
+                    {{- end }}
+                    </tbody>
+                {{- end }}
+            </table>
+        {{- end }}
+    {{- end }}
+</div>

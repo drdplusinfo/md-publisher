@@ -1,0 +1,26 @@
+<head>
+    <title>{{ site.Title }}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {{ with site.Params.description }}
+        <meta name="description" content="{{ . }}">
+    {{ end }}
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
+
+    <link rel="stylesheet" type="text/css" href="/assets/font-awesome.5.0.13/css/fontawesome-all.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/bootstrap-4.3.1/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/rules-tables.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/rules-anchors.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/rules-skeleton.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/rules-main.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/rules-images.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/rules-contacts.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/rules-graphics.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/rules-elements.css">
+
+    {{/* site-specific overrides, the last so it can override anything above */}}
+    {{ with resources.Get "css/custom.css" }}{{ with . | minify | fingerprint }}
+    <link rel="stylesheet" type="text/css" href="{{ .RelPermalink }}">
+    {{ end }}{{ end }}
+</head>

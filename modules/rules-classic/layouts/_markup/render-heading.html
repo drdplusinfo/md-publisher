@@ -1,0 +1,18 @@
+{{- /*
+Classic rules heading: the heading links to itself so readers can grab the
+anchor URL by clicking it. Besides Hugo's own id it carries invisible anchor
+aliases in the shapes the original PHP publisher used — ascii lowercase with
+underscores ("co_jsou_hry_na_hrdiny") and the verbatim heading text
+("Co jsou hry na hrdiny?") — so old inbound fragment links keep scrolling
+to their section.
+*/ -}}
+{{- $plain := .PlainText -}}
+{{- $ascii := lower $plain -}}
+{{- range $from, $to := dict "á" "a" "č" "c" "ď" "d" "é" "e" "ě" "e" "í" "i" "ň" "n" "ó" "o" "ř" "r" "š" "s" "ť" "t" "ú" "u" "ů" "u" "ý" "y" "ž" "z" -}}
+    {{- $ascii = replace $ascii $from $to -}}
+{{- end -}}
+{{- $legacyId := replaceRE `[^a-z0-9 _-]` "" $ascii | strings.TrimSpace | replaceRE `[ ]+` "_" -}}
+{{- $aliases := slice $legacyId $plain | uniq -}}
+<h{{ .Level }} id="{{ .Anchor | safeURL }}" data-original-id="{{ $plain }}"><a href="#{{ .Anchor | safeURL }}">{{ .Text }}
+    {{- range $aliases }}{{ if and . (ne . $.Anchor) }}<span id="{{ . }}" class="invisible-id"></span>{{ end }}{{ end -}}
+</a></h{{ .Level }}>

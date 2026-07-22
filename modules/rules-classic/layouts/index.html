@@ -1,0 +1,15 @@
+{{ define "main" }}
+    {{- $chapters := slice -}}
+    {{- with site.GetPage "chapters" }}{{ $chapters = .Pages.ByWeight }}{{ end -}}
+
+    {{ .Content }}
+
+    {{ if and $chapters (ne site.Params.showTableOfContents false) }}
+        <h1 id="{{ site.Params.tableOfContentsId | default "obsah" }}">{{ site.Params.tableOfContentsTitle | default "Obsah" }}</h1>
+        {{ partial "toc.html" $chapters }}
+    {{ end }}
+
+    {{ range $chapters }}
+        {{ .Content }}
+    {{ end }}
+{{ end }}

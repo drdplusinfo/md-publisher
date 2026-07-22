@@ -1,0 +1,21 @@
+<div id="menu_wrapper">
+    <div class="contacts visible top permanent" id="menu">
+        <div class="container">
+            {{ with site.Params.home }}
+                <span class="menu">
+                    <a id="homeButton" class="internal-url" href="{{ .url }}">
+                        {{- with .image }}<img class="home" alt="{{ site.Params.home.label | default "Home" }}" src="{{ . }}">{{ else }}{{ .label | default "⌂" }}{{ end -}}
+                    </a>
+                </span>
+            {{ end }}
+            {{ range site.Params.contacts }}
+                <span class="contact">
+                    <a {{ if not (hasPrefix .url "mailto:") }}target="_blank" {{ end }}{{ with .class }}class="{{ . }}" {{ end }}href="{{ .url }}">
+                        <span class="small-screen"><i class="{{ .icon }}"></i></span>
+                        <span class="wide-screen"><i class="{{ .icon }}"></i> {{ .label }}</span>
+                    </a>
+                </span>
+            {{ end }}
+        </div>
+    </div>
+</div>

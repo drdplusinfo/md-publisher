@@ -1,0 +1,10 @@
+{{- /*
+Mark external links so rules-anchors.css can style them distinctly and open
+them in a new tab; anchors and internal links render untouched.
+*/ -}}
+{{- $isExternal := or (hasPrefix .Destination "http://") (hasPrefix .Destination "https://") -}}
+{{- if and $isExternal site.Params.baseDomain -}}
+    {{- $isExternal = not (in .Destination site.Params.baseDomain) -}}
+{{- end -}}
+<a href="{{ .Destination | safeURL }}"{{ if $isExternal }} class="external-url" target="_blank"{{ end }}{{ with .Title }} title="{{ . }}"{{ end }}>{{ .Text }}</a>
+{{- /* chomp trailing newline */ -}}

@@ -9,8 +9,12 @@ with pluggable presentation **modules** (Hugo theme components).
 make run
 ```
 
-Then open [http://localhost:1313](http://localhost:1313) — you should see a
-"Hello, World!" page. No local Hugo/Go install needed, only Docker.
+Then open the demos — no local Hugo/Go install needed, only Docker:
+
+- [http://localhost:1313](http://localhost:1313) — "Hello, World!" blog
+  (`site/`, **blog-classic** module)
+- [http://localhost:1314](http://localhost:1314) — "Hello World Rules"
+  single-page book (`site-rules/`, **rules-classic** module)
 
 `make stop` shuts it down, `make build` produces a production build in
 `site/public/`. Set `HUGO_PORT` to publish on another host port
@@ -22,12 +26,14 @@ including drafts and future-dated posts.
 ## Layout
 
 ```
-site/                  # your site: config + content + site-specific static files
+site/                  # blog demo site: config + content + site-specific static files
   hugo.toml            # identity: title, language, menu, params
   content/             # Markdown content
   static/              # site images etc., served from the web root
+site-rules/            # single-page book demo site
 modules/               # presentation modules (Hugo theme components)
   blog-classic/        # classic blog look: featured first post, year archive, RSS
+  rules-classic/       # one large page from Markdown chapters, TOC, anchor-heavy
 ```
 
 A site selects its modules in `site/hugo.toml`:
@@ -95,3 +101,47 @@ Set under `[params]` in `site/hugo.toml`:
 | `ogLocale` | `og:locale` meta on posts | off |
 | `dateFormat`, `dayMonthFormat` | Go time layouts for post dates | `2. 1. 2006`, `2. 1.` |
 | `notFoundTitle`, `notFoundText` | 404 page texts | English defaults |
+
+## rules-classic module
+
+One large single page — a book — composed from Markdown **chapters**, in the
+look of the classic DrD+ rules (pph.drdplus.info): parchment background,
+contacts bar on top, a generated table of contents, and heavily interlinked
+sections.
+
+Content structure (see `site-rules/` for a working example):
+
+```
+content/
+  _index.md                # optional intro rendered above the TOC
+  chapters/
+    _index.md              # cascade: build: {render: never, list: local}
+    01-introduction.md     # weight: 10 — chapters are ordered by weight
+    02-elements.md         # weight: 20
+```
+
+Chapters are headless: they exist only concatenated on the homepage, in
+`weight` order. The `build:` cascade in `chapters/_index.md` is what makes
+them headless — keep it when creating a new site.
+
+Every heading links to itself and gets, besides Hugo's own id
+(`combining-items`), invisible anchor aliases in the legacy shapes
+(`combining_items` and the verbatim heading text), so fragments survive a
+migration from the original PHP publisher. External links are marked
+`external-url` and open in a new tab. The classic skin's CSS classes
+(`example`, `quote`, `introduction`, `calculation`, `item-combination`, table
+styles…) are all available in Markdown via raw HTML.
+
+Params (`site-rules/hugo.toml` shows them all):
+
+| Param | Meaning | Default |
+|---|---|---|
+| `description` | meta description | — |
+| `home` | `{ url, image?, label? }` for the top-left home button | hidden |
+| `contacts` | array of `{ icon, label, url, class? }` (Font Awesome icons) | — |
+| `showTableOfContents` | render the generated TOC | `true` |
+| `tableOfContentsTitle`, `tableOfContentsId` | TOC heading text and id | `Obsah`, `obsah` |
+| `baseDomain` | links containing it are NOT marked external | — |
+
+A site-specific stylesheet in `assets/css/custom.css` is minified,
+fingerprinted and loaded last, like in blog-classic.
