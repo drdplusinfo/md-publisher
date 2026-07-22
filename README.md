@@ -145,3 +145,13 @@ Params (`site-rules/hugo.toml` shows them all):
 
 A site-specific stylesheet in `assets/css/custom.css` is minified,
 fingerprinted and loaded last, like in blog-classic.
+
+The full-page background artwork is site-supplied (the module ships only the
+parchment texture): put an image in the site's `static/` and set it in
+`assets/css/custom.css`:
+
+```css
+.background-image {
+    background-image: url(/my-background.png);
+}
+```
