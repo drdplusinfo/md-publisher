@@ -6,9 +6,9 @@
     xmlns:atom="http://www.w3.org/2005/Atom"
 >
     <channel>
-        <title>{{ site.Params.rssTitle | default site.Title | plainify }}</title>
+        <title>{{ site.Params.rssTitle | default site.Title | plainify | htmlUnescape }}</title>
         <link>{{ "/" | absURL }}</link>
-        <description>{{ site.Params.description | plainify }}</description>
+        <description>{{ site.Params.description | plainify | htmlUnescape }}</description>
         <pubDate>{{ $now.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
         <atom:link href="{{ "rss.xml" | absURL }}" rel="self" type="application/rss+xml" />
         {{ with index $posts 0 }}
@@ -17,9 +17,9 @@
         {{ range $posts }}
             {{- if le (.Date.Format "2006-01-02") ($now.Format "2006-01-02") }}
         <item>
-            <title>{{ .Title | markdownify | plainify }}</title>
+            <title>{{ .Title | markdownify | plainify | htmlUnescape }}</title>
             <link>{{ .Permalink }}</link>
-            <description>{{ with .Params.perex }}{{ . | plainify }}{{ end }}</description>
+            <description>{{ with .Params.perex }}{{ . | plainify | htmlUnescape }}{{ end }}</description>
             <guid isPermaLink="false">{{ .Permalink }}</guid>
             <dc:creator>{{ site.Params.author | default site.Title }}</dc:creator>
             <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
