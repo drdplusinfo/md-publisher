@@ -7,7 +7,7 @@
             <div class="card card-bigger">
                 <div class="card-body perex">
                     {{ with $.Params.image }}
-                        <img src="{{ . }}" alt="{{ $.Title | plainify }}" class="post-image img-fluid">
+                        <img src="{{ . }}" alt="{{ $.Title | markdownify | plainify }}" class="post-image img-fluid">
                     {{ end }}
                     {{ . | markdownify }}
                 </div>
@@ -21,7 +21,7 @@
             </div>
         {{ end }}
 
-        <h1>{{ .Title | safeHTML }}</h1>
+        <h1>{{ .Title | markdownify }}</h1>
 
         {{ .Content }}
 
@@ -37,7 +37,7 @@
                                 <em>
                                     &lt;&lt;
                                     <span class="hidden-sm-down">{{ .Date.Format (site.Params.dateFormat | default "2. 1. 2006") }}</span>
-                                    {{ .Title | safeHTML }}
+                                    {{ .Title | markdownify }}
                                 </em>
                             </a>
                         </div>
@@ -47,7 +47,7 @@
                             <a href="{{ .RelPermalink }}">
                                 <em>
                                     <span class="hidden-sm-down">{{ .Date.Format (site.Params.dateFormat | default "2. 1. 2006") }}</span>
-                                    {{ .Title | safeHTML }}
+                                    {{ .Title | markdownify }}
                                     &gt;&gt;
                                 </em>
                             </a>

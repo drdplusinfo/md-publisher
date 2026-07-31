@@ -1,7 +1,7 @@
 {{- $isPost := eq .Section "blog" -}}
 {{- $isPost = and $isPost (eq .Kind "page") -}}
 <head>
-    <title>{{ with .Title }}{{ . | plainify }} | {{ end }}{{ site.Title }}</title>
+    <title>{{ with .Title }}{{ . | markdownify | plainify }} | {{ end }}{{ site.Title }}</title>
     <meta charset="utf-8">
     <meta name="robots" content="index, follow">
 
@@ -17,7 +17,7 @@
         {{ with site.Params.ogLocale }}
             <meta property="og:locale" content="{{ . }}"/>
         {{ end }}
-        <meta property="og:title" content="{{ .Title | plainify }}"/>
+        <meta property="og:title" content="{{ .Title | markdownify | plainify }}"/>
         <meta property="og:description" content="{{ with .Params.perex }}{{ . | plainify }}{{ end }}"/>
         <meta property="og:url" content="{{ .Permalink }}"/>
         {{ with .Params.facebook_image }}
@@ -33,7 +33,7 @@
         {{ with site.Params.twitterSite }}
             <meta name="twitter:site" content="{{ . }}">
         {{ end }}
-        <meta name="twitter:title" content="{{ .Title | plainify }}"/>
+        <meta name="twitter:title" content="{{ .Title | markdownify | plainify }}"/>
         <meta name="twitter:description" content="{{ with .Params.perex }}{{ . | plainify }}{{ end }}"/>
         {{ with .Params.image }}
             <meta property="twitter:image" content="{{ . | absURL }}"/>

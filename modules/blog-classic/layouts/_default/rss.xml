@@ -17,7 +17,7 @@
         {{ range $posts }}
             {{- if le (.Date.Format "2006-01-02") ($now.Format "2006-01-02") }}
         <item>
-            <title>{{ .Title | plainify }}</title>
+            <title>{{ .Title | markdownify | plainify }}</title>
             <link>{{ .Permalink }}</link>
             <description>{{ with .Params.perex }}{{ . | plainify }}{{ end }}</description>
             <guid isPermaLink="false">{{ .Permalink }}</guid>
