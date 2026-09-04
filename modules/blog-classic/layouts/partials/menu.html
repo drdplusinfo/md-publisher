@@ -10,7 +10,7 @@
             {{ end }}
             {{ if ne site.Params.showRssInMenu false }}
                 <li>
-                    <a href="/rss.xml"><img src="/assets/images/Rss-feed.svg" alt="RSS feed" class="inline-image"></a>
+                    <a href="/rss.xml"><img src="/assets/images/Rss-feed.svg" alt="{{ i18n "rssFeed" }}" class="inline-image"></a>
                 </li>
             {{ end }}
             {{ with site.Params.searchDomain }}
@@ -20,7 +20,7 @@
                         <meta itemprop="target" content="https://www.google.com/search?q={q}"/>
                         <input name="sitesearch" value="{{ . }}" type="hidden"/>
                         <input itemprop="query-input" type="text" id="search-query" class="form-control" required="required"
-                               name="q" placeholder="{{ site.Params.searchPlaceholder | default "Search..." }}" autocomplete="off"/>
+                               name="q" placeholder="{{ i18n "search" }}" autocomplete="off"/>
                     </form>
                 </li>
             {{ end }}
