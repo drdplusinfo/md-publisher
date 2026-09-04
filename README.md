@@ -17,8 +17,12 @@ Then open the demos — no local Hugo/Go install needed, only Docker:
   single-page book (`site-rules/`, **rules-classic** module)
 
 `make stop` shuts it down, `make build` produces a production build in
-`site/public/`. Set `HUGO_PORT` to publish on another host port
-(`HUGO_PORT=1314 make run`).
+`site/public/`. Both depend on `make init`, which checks for Docker and copies
+`.env.dist` to `.env` when you do not have one yet — it never touches an
+existing `.env`.
+
+Set `HUGO_PORT` to publish on another host port, either for one run
+(`HUGO_PORT=1314 make run`) or permanently by uncommenting it in your `.env`.
 
 The dev server watches `site/` and `modules/` and rebuilds automatically,
 including drafts and future-dated posts.
@@ -68,11 +72,36 @@ Served at `/blog/2026/03/04/my-post/` (the URL date comes from `date:`, not the
 directory name). Optional front matter: `facebook_image`, `image_author`,
 `deprecated_since` (hides the post from listings and RSS).
 
+### Posts under a name other than "blog"
+
+The section holding posts is named by the `postsSection` param, so a site can
+publish them under any word — `/jsem/2026/03/04/my-post/` instead of `/blog/…`.
+Four things carry the name and must be renamed together:
+
+```toml
+[params]
+  postsSection = "jsem"           # 1. the param
+
+  [[params.menu]]
+    name = "Jsem"
+    id = "jsem"                   # 2. menu id, or the nav item stops highlighting
+    url = "/"
+
+[permalinks]
+  jsem = "/jsem/:year/:month/:day/:slug/"   # 3. the permalink key
+```
+
+plus 4. the content directory, so posts live in
+`site/content/jsem/<year>/<MM-DD-slug>/index.md`. The listing, RSS, post layout,
+social-media meta and both legacy-link rewrites then follow the param. Leave it
+unset to keep `blog`.
+
 ## Legacy link handling (blog-classic)
 
 Content migrated from flat-file generators often links to sibling posts as
 `YYYY-MM-DD-slug.md` (optionally `../YYYY/YYYY-MM-DD-slug.md`). A Markdown
-render hook rewrites such links to `/blog/YYYY/MM/DD/slug/` at build time, and
+render hook rewrites such links to `/<postsSection>/YYYY/MM/DD/slug/` at build
+time, and
 `redirect.js` does the same in the browser for legacy `#!clanky/…` hash URLs.
 Absolute URLs are never touched.
 
@@ -88,19 +117,50 @@ Set under `[params]` in `site/hugo.toml`:
 
 | Param | Meaning | Default |
 |---|---|---|
+| `postsSection` | content section holding the posts; also the first URL segment | `blog` |
 | `description` | RSS channel description | — |
 | `author` | RSS `dc:creator` | site title |
-| `rssTitle` | RSS channel title | site title |
-| `menu` | array of `{ name, url, id?, hideOnSmall? }`; item is active when `id` matches the page's `id` front matter or its section | — |
+| `rssTitle` | RSS channel title, and the `<link rel=alternate>` title in `<head>` | site title |
+| `menu` | array of `{ name, url, id?, hideOnSmall? }`; item is active when `id` matches the page's `id` front matter or its section — so `id` must track `postsSection` | — |
 | `showRssInMenu` | RSS icon in the menu | `true` |
 | `searchDomain` | site-scoped Google search box in the menu | off |
-| `searchPlaceholder` | search box placeholder | `Search...` |
 | `footerHtml` | raw HTML in the footer | empty |
 | `googleAnalyticsId` | GA tracking | off |
 | `twitterSite` | `twitter:site` meta on posts | off |
 | `ogLocale` | `og:locale` meta on posts | off |
-| `dateFormat`, `dayMonthFormat` | Go time layouts for post dates | `2. 1. 2006`, `2. 1.` |
-| `notFoundTitle`, `notFoundText` | 404 page texts | English defaults |
+| `dateFormat`, `dayMonthFormat` | Go time layouts for post dates (`dayMonthFormat` is used for the current year); month names follow the site language (see [Interface texts](#interface-texts-i18n)), so write the layout with `January`, not a translated literal | `2. 1. 2006`, `2. 1.` |
+
+## Interface texts (i18n)
+
+The modules' own texts — the date tooltip, the RSS icon's alt text, the search
+placeholder, the 404 page, the book's TOC heading — come from the module's
+`i18n/` files, picked by the site's language:
+
+```toml
+languageCode = "cs"
+defaultContentLanguage = "cs"
+```
+
+Set **both**. Either one alone already switches the interface texts and the
+month names, but only `defaultContentLanguage` sets `<html lang>` — so a site
+that sets just `languageCode` serves Czech text inside a page declaring
+`lang="en"`.
+
+`en` and `cs` ship with both modules. To add a language, drop an `i18n/<code>.toml`
+into a site (`site/i18n/de.toml`) — it shadows the module — or into the module
+itself:
+
+```toml
+date = "Datum"
+rssFeed = "RSS kanál"
+search = "Hledat..."
+notFoundTitle = "Tady nic není 😢"
+notFoundText = 'Zkus <a href="/">úvodní stránku</a>'
+```
+
+Overriding a single string for one site works the same way: shadow just that key.
+Note that `tableOfContentsId` in rules-classic is deliberately *not* translated —
+it is a URL anchor that inbound links depend on.
 
 ## rules-classic module
 
@@ -140,7 +200,8 @@ Params (`site-rules/hugo.toml` shows them all):
 | `home` | `{ url, image?, label? }` for the top-left home button | hidden |
 | `contacts` | array of `{ icon, label, url, class? }` (Font Awesome icons) | — |
 | `showTableOfContents` | render the generated TOC | `true` |
-| `tableOfContentsTitle`, `tableOfContentsId` | TOC heading text and id | `Obsah`, `obsah` |
+| `tableOfContentsTitle` | TOC heading text; overrides the translation | from `i18n/` |
+| `tableOfContentsId` | TOC heading id — a URL anchor, so it does *not* follow the language | `obsah` |
 | `baseDomain` | links containing it are NOT marked external | — |
 
 A site-specific stylesheet in `assets/css/custom.css` is minified,
