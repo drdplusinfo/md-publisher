@@ -1,6 +1,12 @@
 services:
   hugo:
     image: hugomods/hugo:0.161.1
+    # Hugo writes public/, resources/ and .hugo_build.lock straight into the
+    # bind mount; as root those land root-owned on the host. HOME must point
+    # somewhere writable, as the host uid has no home inside the image.
+    user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
+    environment:
+      HOME: /tmp
     working_dir: /src/site
     volumes:
       - .:/src:delegated
@@ -10,6 +16,9 @@ services:
 
   hugo-rules:
     image: hugomods/hugo:0.161.1
+    user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
+    environment:
+      HOME: /tmp
     working_dir: /src/site-rules
     volumes:
       - .:/src:delegated
