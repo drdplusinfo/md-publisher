@@ -1,5 +1,6 @@
 baseURL = "http://localhost:1314/"
-locale = "en"
+languageCode = "en"
+defaultContentLanguage = "en"
 title = "Hello World Rules"
 theme = ["rules-classic"]
 themesDir = "../modules"

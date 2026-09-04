@@ -1,5 +1,6 @@
 baseURL = "http://localhost:1313/"
-locale = "en"
+languageCode = "en"
+defaultContentLanguage = "en"
 title = "Hello World"
 theme = ["blog-classic"]
 themesDir = "../modules"
