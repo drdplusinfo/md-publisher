@@ -6,3 +6,4 @@ site-rules/resources/
 site-rules/.hugo_build.lock
 var/
 .idea/
+.env
