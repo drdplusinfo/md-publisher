@@ -1,0 +1,28 @@
+{{ define "main" }}
+{{- $postsSection := site.Params.postsSection | default "blog" -}}
+{{ if eq .Section $postsSection }}
+    <div class="container-fluid" id="blog">
+        <h1>{{ .Title }}</h1>
+        <ul class="list-unstyled line-separated">
+            {{ range where .Pages "Params.deprecated_since" nil }}
+                <li class="col-md-12">
+                    <a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a>
+                    {{ partial "post-metadata-line.html" (dict "post" .) }}
+                </li>
+            {{ end }}
+        </ul>
+    </div>
+{{ else }}
+    <div class="container-fluid">
+        <h1>{{ .Title | markdownify }}</h1>
+        {{ .Content }}
+        <ul class="list-unstyled line-separated">
+            {{ range .Pages }}
+                <li class="col-md-12">
+                    <a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a>
+                </li>
+            {{ end }}
+        </ul>
+    </div>
+{{ end }}
+{{ end }}

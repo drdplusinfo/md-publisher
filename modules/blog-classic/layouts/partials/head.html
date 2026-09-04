@@ -1,4 +1,4 @@
-{{- $isPost := eq .Section "blog" -}}
+{{- $isPost := eq .Section (site.Params.postsSection | default "blog") -}}
 {{- $isPost = and $isPost (eq .Kind "page") -}}
 <head>
     <title>{{ with .Title }}{{ . | markdownify | plainify }} | {{ end }}{{ site.Title }}</title>
@@ -41,7 +41,7 @@
     {{ end }}
 
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
-    <link rel="alternate" type="application/rss+xml" title="{{ site.Title }} Blog RSS" href="/rss.xml">
+    <link rel="alternate" type="application/rss+xml" title="{{ site.Params.rssTitle | default site.Title }}" href="/rss.xml">
 
     <link href="/assets/fonts/Open_Sans-300_400_700-2020-07-24.css" rel="stylesheet">
     <link href="/assets/font-awesome.5.0.13/css/fontawesome-all.min.css" rel="stylesheet">
@@ -63,7 +63,7 @@
     <link href="{{ .RelPermalink }}" rel="stylesheet" type="text/css"/>
     {{ end }}{{ end }}
 
-    {{ with resources.Get "js/redirect.js" }}{{ with . | minify | fingerprint }}
+    {{ with resources.Get "js/redirect.js" }}{{ with . | resources.ExecuteAsTemplate "js/redirect.js" $ | minify | fingerprint }}
     <script type="text/javascript" src="{{ .RelPermalink }}"></script>
     {{ end }}{{ end }}
 </head>
