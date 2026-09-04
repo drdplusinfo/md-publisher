@@ -1,0 +1,38 @@
+# Fixture exercising everything a plain `site/` build does not: a renamed posts
+# section, a Czech interface, and an unrelated section that must not inherit the
+# blog's chrome.
+baseURL = "http://localhost:1313/"
+languageCode = "cs"
+defaultContentLanguage = "cs"
+title = "Zkouška"
+theme = ["blog-classic"]
+themesDir = "../../../modules"
+disableKinds = ["taxonomy", "term"]
+
+[permalinks]
+  jsem = "/jsem/:year/:month/:day/:slug/"
+
+[outputs]
+  home = ["HTML", "RSS"]
+  section = ["HTML"]
+  page = ["HTML"]
+
+[outputFormats.RSS]
+  baseName = "rss"
+
+[params]
+  postsSection = "jsem"
+  description = "Zkušební web"
+  searchDomain = "example.com"
+  dateFormat = "2. January 2006"
+  dayMonthFormat = "2. January"
+
+  [[params.menu]]
+    name = "Jsem"
+    id = "jsem"
+    url = "/"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

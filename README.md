@@ -21,6 +21,10 @@ Then open the demos — no local Hugo/Go install needed, only Docker:
 `.env.dist` to `.env` when you do not have one yet — it never touches an
 existing `.env`.
 
+`make test` runs the module smoke tests: it builds both demos plus a fixture
+site that renames the posts section and switches to Czech, then asserts on the
+generated HTML. It needs only Docker, and builds into a temporary directory.
+
 Set `HUGO_PORT` to publish on another host port, either for one run
 (`HUGO_PORT=1314 make run`) or permanently by uncommenting it in your `.env`.
 

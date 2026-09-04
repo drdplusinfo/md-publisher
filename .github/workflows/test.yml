@@ -1,0 +1,17 @@
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  smoke:
+    name: Module smoke tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The suite pulls hugomods/hugo itself and builds each fixture in a
+      # temporary directory, so nothing else has to be installed here.
+      - run: make test

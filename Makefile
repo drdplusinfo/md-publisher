@@ -1,4 +1,4 @@
-.PHONY: init run stop build
+.PHONY: init run stop build test
 
 MAKEFLAGS += --no-print-directory
 
@@ -30,3 +30,6 @@ stop:
 
 build: init
 	docker compose run --rm hugo --minify
+
+test:
+	./tests/run.sh

@@ -7,8 +7,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 A generic Markdown-based site publisher: **Hugo in Docker** (no local Hugo/Go
 install) plus pluggable presentation **modules** — Hugo theme components living
 in `modules/`, each extracted from a legacy hand-written PHP/Statie site of the
-DrD+ family. There is no application code, no build tooling and no test suite;
-everything is Hugo templates, CSS and content. `README.md` is the user-facing
+DrD+ family. There is no application code and no build tooling; everything is
+Hugo templates, CSS and content. `README.md` is the user-facing
 documentation and documents every module parameter — keep it in sync when you
 change a module's template contract.
 
@@ -19,6 +19,7 @@ make init    # checks docker, seeds .env from .env.dist if absent
 make run     # docker compose up -d; prints both demo URLs
 make stop    # docker compose down
 make build   # production build of site/ into site/public/ (--minify)
+make test    # module smoke tests (tests/run.sh)
 ```
 
 Two demo sites run side by side from one compose file:
@@ -200,6 +201,27 @@ Two deliberate exceptions, both because the value is not really a label:
 Anything reader-visible added to a layout belongs in `i18n/`, not inline: the
 modules are generic, so an untranslated literal (there used to be a Czech
 `title="Datum"` and an `"Obsah"` default) is a bug even when it looks harmless.
+
+## Tests
+
+`make test` runs `tests/run.sh`: it builds `site/`, `site-rules/` and the
+`tests/fixtures/renamed-section/` fixture with Hugo in Docker, then greps the
+generated HTML. Hugo is the test runner — there is nothing else to run.
+
+The fixture is the interesting one: a Czech site with `postsSection = "jsem"`,
+an unrelated `pages/` section and a past-year post, so one build covers the
+rename, the translations, localized dates and the non-post-section case.
+
+Every assertion stands for a bug that actually shipped, and each one builds
+cleanly while producing wrong output — which is why "it builds" is not the
+assertion. When adding a check, confirm it *fails* against the reintroduced bug
+before trusting it: an earlier version of the RSS check asserted only the
+RFC-822 *shape*, which Czech abbreviations also match, so it passed against a
+feed reading `po, 11 bře 2024`. It now asserts the English names on the Czech
+fixture, where the difference is visible.
+
+The suite builds into a `mktemp -d`, never into `site/public/`, so it is safe to
+run while a dev server is up. CI runs it on every pull request.
 
 ## Conventions
 
