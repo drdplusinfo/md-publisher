@@ -4,7 +4,7 @@
             {{ with site.Params.home }}
                 <span class="menu">
                     <a id="homeButton" class="internal-url" href="{{ .url }}">
-                        {{- with .image }}<img class="home" alt="{{ site.Params.home.label | default "Home" }}" src="{{ . }}">{{ else }}{{ .label | default "⌂" }}{{ end -}}
+                        {{- with .image }}<img class="home" alt="{{ site.Params.home.label | default (i18n "home") }}" src="{{ . }}">{{ else }}{{ .label | default "⌂" }}{{ end -}}
                     </a>
                 </span>
             {{ end }}

@@ -1,0 +1,5 @@
+date = "Datum"
+rssFeed = "RSS kanál"
+search = "Hledat..."
+notFoundTitle = "Tady nic není 😢"
+notFoundText = 'Zkus <a href="/">úvodní stránku</a>'

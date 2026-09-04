@@ -7,9 +7,9 @@
 
 <div id="content">
     <div class="container" id="missing">
-        <h1>{{ site.Params.notFoundTitle | default "Nothing here 😢" }}</h1>
+        <h1>{{ i18n "notFoundTitle" }}</h1>
         <p class="text-center blockquote">
-            {{ site.Params.notFoundText | default `Try the <a href="/">home page</a>` | safeHTML }}
+            {{ i18n "notFoundText" | safeHTML }}
         </p>
     </div>
 </div>

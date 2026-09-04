@@ -1,0 +1,5 @@
+date = "Date"
+rssFeed = "RSS feed"
+search = "Search..."
+notFoundTitle = "Nothing here 😢"
+notFoundText = 'Try the <a href="/">home page</a>'
