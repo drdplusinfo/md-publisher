@@ -1,4 +1,5 @@
-{{- $posts := where (where site.RegularPages "Section" "blog") "Params.deprecated_since" nil -}}
+{{- $postsSection := site.Params.postsSection | default "blog" -}}
+{{- $posts := where (where site.RegularPages "Section" $postsSection) "Params.deprecated_since" nil -}}
 {{- $now := now -}}
 <rss version="2.0"
     xmlns:content="http://purl.org/rss/1.0/modules/content/"
